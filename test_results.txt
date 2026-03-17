@@ -1,0 +1,20 @@
+
+=======================================================
+[1m  REAL API CONNECTION TEST[0m
+=======================================================
+
+--- STDERR ---
+Traceback (most recent call last):
+  File "D:\Downloads\New folder (3)\scripts\test_real_connections.py", line 206, in <module>
+    asyncio.run(main())
+  File "C:\Users\sarve\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "C:\Users\sarve\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 641, in run_until_complete
+    return future.result()
+  File "D:\Downloads\New folder (3)\scripts\test_real_connections.py", line 188, in main
+    await test_gemini()
+  File "D:\Downloads\New folder (3)\scripts\test_real_connections.py", line 49, in test_gemini
+    print(f"\n\u2500\u2500 Gemini API (aistudio.google.com) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500")
+  File "C:\Users\sarve\AppData\Local\Programs\Python\Python310\lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 2-3: character maps to <undefined>
