@@ -1,6 +1,6 @@
 # Patient-First Health Advocate Agent
 
-A privacy-first AI health agent for the Auth0 "Authorized to Act" Hackathon.
+A privacy-first AI health agent .
 
 ## What it does
 
@@ -19,16 +19,7 @@ A privacy-first AI health agent for the Auth0 "Authorized to Act" Hackathon.
 | Book appointment | WRITE token | Yes (10-min window) |
 | Send summary to doctor | WRITE token | Yes (10-min window) |
 
-## Free tier setup
 
-All services used are free:
-- Auth0 free tier (Token Vault included)
-- Google Fit API (free)
-- HAPI FHIR public sandbox (free)
-- Gemini 1.5 Flash (free tier)
-- Twilio free trial (optional, for SMS)
-
-## Quick start
 
 ### Backend
 
@@ -49,7 +40,7 @@ cp .env.local.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000
+Open 
 
 ## Project structure
 
@@ -83,9 +74,3 @@ health-advocate/
 6. Complete verification → appointment booked
 7. Go to Settings → disconnect Google Fit → agent loses access immediately
 
-## Hackathon judging notes
-
-- Token Vault: all API tokens stored in Auth0 Token Vault, never in code
-- Step-up auth: write actions require fresh biometric verification
-- Privacy: raw health data only exists in-memory during LLM call, never persisted
-- User control: one-click revoke per service on settings page
