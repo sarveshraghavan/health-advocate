@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import Link from 'next/link'
 
 const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
@@ -10,12 +11,29 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false)
   const [watching, setWatching] = useState(false)
   const [stepUpUrl, setStepUpUrl] = useState(null)
+  const [fitLive, setFitLive] = useState<boolean | null>(null)
   const chatEndRef = useRef(null)
   const userId = 'demo-user-001'
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
+
+  // Poll Google Fit connection status
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const res = await fetch(`${API}/api/connection-status?user_id=${userId}`)
+        if (res.ok) {
+          const data = await res.json()
+          setFitLive(!!data.google_fit_live)
+        }
+      } catch { /* backend not running yet */ }
+    }
+    check()
+    const interval = setInterval(check, 15_000)
+    return () => clearInterval(interval)
+  }, [])
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return
@@ -58,7 +76,7 @@ export default function Dashboard() {
     <div style={{ maxWidth: 700, margin: '0 auto', padding: '24px 16px', fontFamily: 'system-ui, sans-serif' }}>
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <div>
           <h1 style={{ margin: 0, fontSize: 22, fontWeight: 500 }}>Health Advocate</h1>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: '#666' }}>Privacy-first AI health agent</p>
@@ -79,6 +97,39 @@ export default function Dashboard() {
           {watching ? '● Watching' : '○ Start watching'}
         </button>
       </div>
+
+      {/* Google Fit status banner */}
+      {fitLive === false && (
+        <div style={{
+          padding: '10px 14px', marginBottom: 12,
+          background: '#FEFCE8', border: '1px solid #FCD34D',
+          borderRadius: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+        }}>
+          <span style={{ fontSize: 13, color: '#78350F' }}>
+            ⚠️ Using <strong>mock health data</strong> — connect Google Fit for real readings
+          </span>
+          <Link href="/settings" style={{
+            padding: '5px 12px', background: '#F59E0B', color: '#fff',
+            borderRadius: 6, fontSize: 12, textDecoration: 'none', fontWeight: 600
+          }}>
+            Connect →
+          </Link>
+        </div>
+      )}
+      {fitLive === true && (
+        <div style={{
+          padding: '8px 14px', marginBottom: 12,
+          background: '#E1F5EE', border: '1px solid #5DCAA5',
+          borderRadius: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+        }}>
+          <span style={{ fontSize: 13, color: '#0F4F3E' }}>
+            🟢 <strong>Google Fit live</strong> — reading real heart rate, steps & sleep
+          </span>
+          <Link href="/settings" style={{ fontSize: 12, color: '#0F6E56', textDecoration: 'none' }}>
+            Manage →
+          </Link>
+        </div>
+      )}
 
       {/* Step-up banner */}
       {stepUpUrl && (
